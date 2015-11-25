@@ -16,6 +16,7 @@ xte_node = tf.placeholder("float", [784])
 
 distance = tf.reduce_sum(tf.abs(tf.sub(xtr_node, xte_node)), reduction_indices= 1)
 
+#TODO: can modify the prediction routine to do a vote base on top N results
 pred = tf.argmin(distance, dimension = 0)
 
 accuracy = 0.0
@@ -32,7 +33,7 @@ with tf.Session() as sess:
     for i in range(num_samples):
         nn_idx = sess.run(pred, feed_dict = {xtr_node : x_tr, xte_node : x_te[i, :]})
 
-        predict_ = np.argmax(y_tr[nn_idx, :])
+        predict_ = np.argmax(y_tr[nn_idx, :], 0)
         actual_ = np.argmax(y_te[i, :])
         
         if predict_ == actual_:
